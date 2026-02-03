@@ -217,7 +217,7 @@ INSERT INTO customer (name, street, city) VALUES
 ('Tamer Khaled', '90 Karnak St', 'Luxor'),
 ('Rana Ahmed', '12 Naama Bay Rd', 'Sharm El-Sheikh'),
 ('Hossam Fathy', '24 El-Nasr St', 'Hurghada');
---====================== INSERT INTO customer=======================
+--====================== INSERT INTO cust_phones=======================
 INSERT INTO cust_phones (cust_id, phone_number) VALUES
 (1, '010-20110001'),
 (2, '010-20110002'),
