@@ -81,9 +81,9 @@ CREATE TABLE Orders (
     CONSTRAINT fk_orders_customer 
         FOREIGN KEY (cust_id) REFERENCES customer(cust_id),
 
-    CONSTRAINT fk_orders_driver 
-        FOREIGN KEY (driver_id) REFERENCES driver(driver_id),
+    CONSTRAINT fk_orders_delivery 
+        FOREIGN KEY (driver_id) REFERENCES delivery(driver_id),
 
     CONSTRAINT fk_orders_office 
         FOREIGN KEY (office_id) REFERENCES office(office_id)
-);
+)
