@@ -165,3 +165,35 @@ CREATE TABLE Orders (
     CONSTRAINT fk_orders_office 
         FOREIGN KEY (office_id) REFERENCES office(office_id)
 );
+
+
+
+--=============CREATE TABLE Delivery Item================
+create table deliveryItem(
+item_id int,
+description varchar(200),
+item_weight decimal(10,2) not null,
+delivery_fee decimal(10,2),
+order_number int not null,
+primary key (item_id,order_number),
+foreign key (order_number) REFERENCES Orders(order_number),
+
+CONSTRAINT chk_item_weight CHECK (item_weight >= 0),
+CONSTRAINT chk_delivery_fee CHECK (delivery_fee >= 0)
+)
+
+
+--=============CREATE TABLE Vehicle Assignment================
+create table VehicleAssignment(
+vehicle_ass_ID int primary key identity(1,1),
+driver_id int not null,
+plate_number varchar(20) not null,
+startDate datetime ,
+endDate datetime,
+foreign key (driver_id) REFERENCES delivery(driver_id),
+foreign key (plate_number) REFERENCES Vehicle(plate_number),
+
+CONSTRAINT chk_dates CHECK (endDate >= startDate),
+CONSTRAINT uq_driver_start UNIQUE (driver_id, startDate),
+CONSTRAINT uq_plate_num UNIQUE (plate_number, startDate)
+)
