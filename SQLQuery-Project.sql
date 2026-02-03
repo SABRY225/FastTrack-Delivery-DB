@@ -1,4 +1,8 @@
+<<<<<<< HEAD
  --- Create Table DB
+=======
+  --- Create Table DB
+>>>>>>> 900239319c3c38f5bfb4f3e1865179e323bad57d
 
 --=============CREATE TABLE office================
 CREATE TABLE office (
