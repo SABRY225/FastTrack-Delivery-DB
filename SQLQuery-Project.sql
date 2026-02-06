@@ -1,7 +1,5 @@
  --============= Create Table DB ================
- create database fastTrackDelivery
 
- use fastTrackDelivery
 --=============CREATE TABLE office================
 CREATE TABLE office (
     office_id INT IDENTITY(1,1),
