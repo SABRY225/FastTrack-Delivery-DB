@@ -1,4 +1,5 @@
  --============= Create Table DB ================
+ use db40264
 
 --=============CREATE TABLE office================
 CREATE TABLE office (

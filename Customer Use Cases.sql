@@ -2,6 +2,7 @@
 --=============================== Customer Use Cases ================================
 
 --============= Register Customer ==============
+use db40264
 
 create or alter procedure sp_AddCustomer 
     @name varchar(100),
@@ -33,23 +34,9 @@ begin
      COMMIT TRANSACTION;
    END TRY
    BEGIN CATCH
-        IF @@TRANCOUNT > 0
-            ROLLBACK TRANSACTION;
-  
+      ROLLBACK TRANSACTION;
    END CATCH;
-
 end
-
-
-
-exec sp_AddCustomer @name ='Shimaa',@phone_number = '01066699999',@street='konouz',@city ='qena'
-exec sp_AddCustomer @name ='mohammed',@phone_number = '01066699999',@street='october',@city ='cairo'
-exec sp_AddCustomer @name ='ali',@phone_number = '01023456892',@street='october',@city ='cairo'
-
-
-
-INSERT INTO cust_phones (cust_id, phone_number) VALUES
-(11, '01066699999')
 
 
 --============= Customer Profile ==============
@@ -64,7 +51,6 @@ from customer c
      on c.cust_id = o.cust_id
 group by c.name,c.street, c.city
 
-select * from vw_CustomerProfile
 
 --============= Customer Orders ==============
 
@@ -93,7 +79,6 @@ begin
    order by o.order_date desc
 end
 
-exec sp_GetCustomerOrders @cust_id = 12
 
 --============= Customer Financial Analytics Dashboard ==============
 
@@ -125,8 +110,6 @@ return
  where cust_id = @customer_id
 
 
-select * from fn_CustomerFinancialAnalytics(1) 
-
 
 --============= Customer classification (VIP / Normal) ==============
 
@@ -145,8 +128,6 @@ select
 from customer c
 left join Orders o ON c.cust_id = o.cust_id
 GROUP BY c.cust_id, c.name,c.city
-
-select * from vw_CustomerCategory
 
 
 --============= Customer address update ==============
@@ -170,12 +151,8 @@ begin
     WHERE cust_id = @cust_id
 END
 
-exec sp_UpdateCustomerAddress @cust_id = 11, @street=zamalik ,@city = cairo
-
-select * from customer
 
 --============= Preventing the deletion of a customer with orders ==============
-
 create or alter trigger trg_PreventDeleteCustomer
 on customer
 instead of delete
@@ -197,7 +174,3 @@ begin
     where cust_id in (select cust_id from deleted)
      PRINT 'Deleted successsfully'
 end
-
-DELETE FROM customer WHERE cust_id = 1;
-
-select * from cust_phones
