@@ -166,7 +166,6 @@ CREATE TABLE Orders (
 );
 
 
-
 --=============CREATE TABLE Delivery Item================
 create table deliveryItem(
 item_id int,
@@ -196,3 +195,12 @@ CONSTRAINT chk_dates CHECK (endDate >= startDate),
 CONSTRAINT uq_driver_start UNIQUE (driver_id, startDate),
 CONSTRAINT uq_plate_num UNIQUE (plate_number, startDate)
 )
+
+--=============Edits================
+
+ALTER TABLE Orders
+DROP CONSTRAINT chk_total_cost;
+
+ALTER TABLE Orders
+ADD CONSTRAINT chk_total_cost
+CHECK (total_cost >= 0);

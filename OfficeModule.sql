@@ -137,3 +137,35 @@ END;
 --==============Case 8: Improve Office Orders Search :: Index=========================
 CREATE INDEX idx_Orders_OfficeId
 ON Orders (office_id);
+
+--==============Case 9: PayOrder :: PROCEDURE=========================
+CREATE OR ALTER PROCEDURE sp_PayOrder
+    @order_number INT,
+    @pay_method VARCHAR(20)
+AS
+BEGIN
+    UPDATE Orders
+    SET 
+        amount = total_cost,
+        pay_method = @pay_method,
+        pay_date = GETDATE(),
+        order_status = 'paid'
+    WHERE order_number = @order_number;
+END;
+--==============Case 10: Validate Payment :: TRIGGER=========================
+CREATE OR ALTER TRIGGER trg_ValidatePayment
+ON Orders
+AFTER UPDATE
+AS
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM inserted i
+        WHERE i.order_status = 'paid'
+          AND i.amount IS NULL
+    )
+    BEGIN
+        RAISERROR ('Paid orders must have a payment amount.', 16, 1);
+        ROLLBACK;
+    END
+END;
