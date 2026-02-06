@@ -259,3 +259,101 @@ INSERT INTO cust_phones (cust_id, phone_number) VALUES
 (38, '013-20110308'),
 (39, '013-20110309'),
 (40, '013-20110310');
+
+--=========================== INSERT INTO office ============================
+INSERT INTO office (name, city, street)
+VALUES
+('Main Office', 'Cairo', 'Tahrir St'),
+('Branch Alex', 'Alexandria', 'Corniche Rd'),
+('Branch Giza', 'Giza', 'Pyramids St');
+
+--=========================== INSERT INTO office_phones ============================
+INSERT INTO office_phones (office_id, phone_number)
+VALUES
+(1, '0223456789'),
+(1, '01011112222'),
+(2, '0345678901'),
+(3, '0233344455');
+
+--=========================== INSERT INTO employee ============================
+INSERT INTO employee (name, job_title, hire_date, salary, office_id)
+VALUES
+('Ahmed Ali', 'Manager', '2020-01-10', 12000, 1),
+('Mohamed Hassan', 'Accountant', '2021-03-15', 8000, 1),
+('Sara Mahmoud', 'HR', '2022-05-20', 7500, 2),
+('Omar Fathy', 'Driver', '2019-07-01', 6000, 2),
+('Youssef Adel', 'Driver', '2020-09-12', 6200, 3),
+('Mona Ashraf', 'Driver', '2021-11-30', 6100, 1);
+
+--=========================== INSERT INTO emp_phones ============================
+INSERT INTO emp_phones (emp_id, phone_number)
+VALUES
+(1, '01022223333'),
+(2, '01144445555'),
+(3, '01266667777'),
+(4, '01088889999'),
+(5, '01199990000'),
+(6, '01511112222');
+
+--=========================== INSERT INTO delivery ============================
+INSERT INTO delivery (license_number, emp_id)
+VALUES
+('LIC1001', 4),
+('LIC1002', 5),
+('LIC1003', 6);
+
+--=========================== INSERT INTO customer ============================
+INSERT INTO customer (name, street, city)
+VALUES
+('Karim Nabil', 'Nasr City', 'Cairo'),
+('Hala Samir', 'Stanley', 'Alexandria'),
+('Tamer Adel', 'Dokki', 'Giza'),
+('Nour Hassan', 'Talkha', 'Mansoura');
+
+--=========================== INSERT INTO cust_phones ============================
+INSERT INTO cust_phones (cust_id, phone_number)
+VALUES
+(1, '01012345678'),
+(1, '01187654321'),
+(2, '01255556666'),
+(3, '01099998888'),
+(4, '01544443333');
+
+--=========================== INSERT INTO Vehicle ============================
+INSERT INTO Vehicle (plate_number, model, vehicle_type, capacity)
+VALUES
+('CAR001', 'Toyota Corolla', 'car', 450),
+('CAR002', 'Hyundai Elantra', 'car', 470),
+('TRK001', 'Isuzu NQR', 'truck', 7000),
+('BUS001', 'Toyota Coaster', 'bus', 8000),
+('MOT001', 'Honda CG', 'motorcycle', 120);
+
+--=========================== INSERT INTO Orders ============================
+INSERT INTO Orders
+(order_number, order_date, total_cost, cust_id, driver_id, office_id,
+ pay_date, pay_method, amount, order_status)
+VALUES
+(1001, '2024-07-01', 300, 1, 1, 1, '2024-07-01', 'cash', 300, 'paid'),
+(1002, '2024-07-02', 450, 2, 2, 2, '2024-07-02', 'card', 450, 'delivered'),
+(1003, '2024-07-03', 200, 3, 3, 3, NULL, 'cash', 200, 'pending'),
+(1004, '2024-07-04', 600, 4, 1, 1, '2024-07-04', 'online', 600, 'paid');
+
+
+--=========================== INSERT INTO deliveryItem ============================
+INSERT INTO deliveryItem
+(item_id, description, item_weight, delivery_fee, order_number)
+VALUES
+(1, 'Mobile Phones', 5.5, 40, 1001),
+(2, 'Laptop', 2.3, 30, 1001),
+(1, 'Office Chairs', 25, 120, 1002),
+(1, 'Documents', 1, 10, 1003),
+(1, 'TV Screen', 18, 150, 1004);
+
+--=========================== INSERT INTO VehicleAssignment ============================
+INSERT INTO VehicleAssignment
+(driver_id, plate_number, startDate, endDate)
+VALUES
+(1, 'CAR001', '2024-01-01', '2024-06-30'),
+(2, 'TRK001', '2024-02-01', NULL),
+(3, 'BUS001', '2024-03-01', '2024-09-30'),
+(1, 'MOT001', '2024-07-01', NULL);

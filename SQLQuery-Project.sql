@@ -1,9 +1,7 @@
-<<<<<<< HEAD
- --- Create Table DB
-=======
-  --- Create Table DB
->>>>>>> 900239319c3c38f5bfb4f3e1865179e323bad57d
+ --============= Create Table DB ================
+ create database fastTrackDelivery
 
+ use fastTrackDelivery
 --=============CREATE TABLE office================
 CREATE TABLE office (
     office_id INT IDENTITY(1,1),
@@ -109,6 +107,8 @@ CREATE TABLE cust_phones (
         ON DELETE CASCADE
 );
 
+ALTER TABLE cust_phones
+ADD CONSTRAINT UQ_phone_number UNIQUE (phone_number);
 --=============CREATE TABLE vehicle================
 
 CREATE TABLE Vehicle (
@@ -164,7 +164,7 @@ CREATE TABLE Orders (
         FOREIGN KEY (cust_id) REFERENCES customer(cust_id),
 
     CONSTRAINT fk_orders_driver 
-        FOREIGN KEY (driver_id) REFERENCES driver(driver_id),
+        FOREIGN KEY (driver_id) REFERENCES delivery(driver_id),
 
     CONSTRAINT fk_orders_office 
         FOREIGN KEY (office_id) REFERENCES office(office_id)
