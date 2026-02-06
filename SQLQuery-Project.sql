@@ -1,3 +1,4 @@
+ --============= Create Table DB ================
 
 --=============CREATE TABLE office================
 CREATE TABLE office (
@@ -104,6 +105,8 @@ CREATE TABLE cust_phones (
         ON DELETE CASCADE
 );
 
+ALTER TABLE cust_phones
+ADD CONSTRAINT UQ_phone_number UNIQUE (phone_number);
 --=============CREATE TABLE vehicle================
 
 CREATE TABLE Vehicle (
