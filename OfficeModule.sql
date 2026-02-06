@@ -6,6 +6,7 @@ CREATE OR ALTER PROCEDURE sp_CreateOrder
     @driver_id INT,
     @office_id INT,
     @order_status VARCHAR(20)
+WITH ENCRYPTION
 AS
 BEGIN
     INSERT INTO Orders (
@@ -34,6 +35,7 @@ CREATE OR ALTER PROCEDURE sp_AddDeliveryItem
     @item_weight DECIMAL(10,2),
     @delivery_fee DECIMAL(10,2),
     @order_number INT
+WITH ENCRYPTION
 AS
 BEGIN
     INSERT INTO deliveryItem (
@@ -55,6 +57,7 @@ END;
 --==============Case 3: Calculate Order Total :: Function=========================
 CREATE OR ALTER FUNCTION fn_CalculateOrderTotal (@order_number INT)
 RETURNS DECIMAL(10,2)
+WITH ENCRYPTION
 AS
 BEGIN
     DECLARE @total DECIMAL(10,2);
@@ -80,6 +83,7 @@ BEGIN
 END;
 --==============Case 5: View Order Details :: View=========================
 CREATE OR ALTER VIEW vw_OrderDetails
+WITH ENCRYPTION
 AS
 SELECT
     o.order_number,
@@ -100,6 +104,7 @@ JOIN delivery d ON o.driver_id = d.driver_id
 JOIN office ofc ON o.office_id = ofc.office_id;
 --==============Case 6: Office Summary Report :: View=========================
 CREATE OR ALTER VIEW vw_OfficeSummary
+WITH ENCRYPTION
 AS
 SELECT
     ofc.office_id,
@@ -142,6 +147,7 @@ ON Orders (office_id);
 CREATE OR ALTER PROCEDURE sp_PayOrder
     @order_number INT,
     @pay_method VARCHAR(20)
+WITH ENCRYPTION
 AS
 BEGIN
     UPDATE Orders
