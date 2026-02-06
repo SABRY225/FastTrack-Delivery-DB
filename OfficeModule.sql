@@ -175,3 +175,22 @@ BEGIN
         ROLLBACK;
     END
 END;
+
+--==============Case 11: Prevent Paid Order Update :: TRIGGER=========================
+CREATE OR ALTER TRIGGER trg_PreventPaidOrderUpdate
+ON Orders
+AFTER UPDATE
+AS
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM inserted i
+        JOIN deleted d ON i.order_number = d.order_number
+        WHERE i.order_status = 'paid'
+          AND (i.total_cost <> d.total_cost OR i.amount <> d.amount)
+    )
+    BEGIN
+        RAISERROR('Cannot change total_cost or amount for orders that are already paid.', 16, 1);
+        ROLLBACK;
+    END
+END;
