@@ -1,8 +1,3 @@
-<<<<<<< HEAD
- --- Create Table DB
-=======
-  --- Create Table DB
->>>>>>> 900239319c3c38f5bfb4f3e1865179e323bad57d
 
 --=============CREATE TABLE office================
 CREATE TABLE office (
@@ -164,7 +159,7 @@ CREATE TABLE Orders (
         FOREIGN KEY (cust_id) REFERENCES customer(cust_id),
 
     CONSTRAINT fk_orders_driver 
-        FOREIGN KEY (driver_id) REFERENCES driver(driver_id),
+        FOREIGN KEY (driver_id) REFERENCES delivery(driver_id),
 
     CONSTRAINT fk_orders_office 
         FOREIGN KEY (office_id) REFERENCES office(office_id)
