@@ -133,7 +133,7 @@ BEGIN
         JOIN deleted d ON e.office_id = d.office_id
     )
     BEGIN
-        RAISERROR ('Cannot delete office that has employees.', 16, 1);
+        PRINT'Cannot delete office that has employees.'
         ROLLBACK;
     END
     ELSE
@@ -175,7 +175,7 @@ BEGIN
           AND i.amount IS NULL
     )
     BEGIN
-        RAISERROR ('Paid orders must have a payment amount.', 16, 1);
+        PRINT 'Paid orders must have a payment amount.'
         ROLLBACK;
     END
 END;
@@ -194,7 +194,54 @@ BEGIN
           AND (i.total_cost <> d.total_cost OR i.amount <> d.amount)
     )
     BEGIN
-        RAISERROR('Cannot change total_cost or amount for orders that are already paid.', 16, 1);
+        PRINT 'Cannot change total_cost or amount for orders that are already paid.'
         ROLLBACK;
+    END
+END;
+
+
+--==============Case 12: Prevent Any Order Delete :: TRIGGER=========================
+
+CREATE TRIGGER trg_PreventAnyOrderDelete
+ON Orders
+INSTEAD OF DELETE
+AS
+BEGIN
+    PRINT 'Deleting orders is not allowed! All orders are preserved for reporting.';
+    ROLLBACK TRANSACTION;
+END;
+
+
+--==============Case 13: Assign Order To Delivery :: PROCEDURE=========================
+CREATE or alter PROCEDURE sp_AssignOrderToDelivery
+    @order_number INT
+AS
+BEGIN
+    DECLARE @driver_id INT;
+    DECLARE @plate_number VARCHAR(10);
+
+    SELECT TOP 1 
+        @driver_id = e.emp_id, 
+        @plate_number = va.plate_number
+    FROM employee e
+    JOIN VehicleAssignment va ON e.emp_id = va.driver_id
+    WHERE va.endDate IS NULL 
+    ORDER BY e.emp_id;
+
+    IF @driver_id IS NOT NULL AND @plate_number IS NOT NULL
+    BEGIN
+        UPDATE Orders
+        SET driver_id = @driver_id
+        WHERE order_number = @order_number;
+
+        UPDATE VehicleAssignment
+        SET startDate = GETDATE()
+        WHERE driver_id = @driver_id AND plate_number = @plate_number;
+
+        PRINT 'Order assigned successfully!';
+    END
+    ELSE
+    BEGIN
+        PRINT 'No available driver or vehicle to assign!';
     END
 END;
