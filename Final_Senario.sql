@@ -67,9 +67,11 @@ WHERE cust_id = 1;
 
 --3. Preventing the deletion order
 
-
+	DELETE FROM Orders
+	WHERE order_number = 2000;
+	
 --4. Shipping order form (person and automatic vehicle)
-
+	exec sp_AssignOrderToDelivery @order_number = 2000
 
 --------- Driver
 --1. Create a delivery driver
