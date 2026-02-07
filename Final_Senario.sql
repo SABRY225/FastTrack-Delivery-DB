@@ -43,7 +43,9 @@ EXEC sp_AddDeliveryItem
 EXEC sp_GetCustomerOrders @cust_id = 1;
 
 -- 4. Cancel order
-
+UPDATE Orders
+SET order_status = 'cancelled'
+WHERE order_number = 1;
 
 -- 5. View a financial report for the client
 SELECT * 
@@ -85,7 +87,7 @@ EXEC sp_RegisterDriver
 
 
 --2. View their profile
-
+EXEC GetCustomerProfile @cust_id = 10;
 
 --3. View assigned orders
 EXEC sp_GetDriverOrders @driver_id = 1;
@@ -96,6 +98,9 @@ SELECT dbo.fn_TotalDriverEarnings(1) AS Total_Earnings;
 
 --5. Payment process (delivering the order to the customer and changing its status)
 EXEC [dbo].[sp_PayOrder] 2000, 'cash';
+
+--6.  delivery report
+EXEC GetDeliveryReport @driver_id = 3;
 
 
 --------- Owner
@@ -112,9 +117,3 @@ EXEC [dbo].[sp_PayOrder] 2000, 'cash';
 
 SELECT * 
 FROM vw_CustomerCategory;
-
---4. Prevent deleting a delivery driver with orders
-
-
-
---5.  delivery report

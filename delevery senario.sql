@@ -198,4 +198,75 @@ BEGIN
     END
 END;
 ---
- 
+CREATE OR ALTER PROCEDURE GetCustomerProfile
+    @cust_id INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        c.cust_id,
+        c.name,
+        c.city,
+        d.license_number,
+        cp.phone_number
+    FROM customer c , delivery d , cust_phones cp
+    WHERE c.cust_id = @cust_id and  cp.cust_id = @cust_id and d.emp_id = @cust_id ; 
+END;
+
+
+CREATE TRIGGER trg_prevent_delete_driver_with_orders
+ON delivery
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (
+        SELECT 1
+        FROM Orders o
+        JOIN deleted d
+            ON o.driver_id = d.driver_id
+    )
+    BEGIN
+        RAISERROR ('Cannot delete driver because he has orders.', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+END;
+
+
+
+CREATE PROCEDURE GetDeliveryReport
+    @driver_id INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        d.driver_id,
+        e.name,
+        d.license_number,
+
+        COUNT(o.order_number) AS total_orders,
+
+        SUM(CASE WHEN o.order_status = 'delivered' THEN 1 ELSE 0 END) 
+            AS delivered_orders,
+
+        SUM(CASE WHEN o.order_status = 'cancelled' THEN 1 ELSE 0 END) 
+            AS cancelled_orders,
+
+        SUM(o.total_cost) AS total_orders_value
+
+    FROM delivery d
+    JOIN employee e ON d.emp_id = e.emp_id
+    LEFT JOIN Orders o ON d.driver_id = o.driver_id
+
+    WHERE d.driver_id = @driver_id
+
+    GROUP BY 
+        d.driver_id,
+        e.name,
+        d.license_number;
+END;
+GO

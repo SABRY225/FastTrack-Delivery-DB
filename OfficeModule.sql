@@ -245,3 +245,43 @@ BEGIN
         PRINT 'No available driver or vehicle to assign!';
     END
 END;
+
+
+--===========================
+CREATE TRIGGER trg_prevent_cancel_paid_order
+ON Orders
+INSTEAD OF UPDATE
+AS
+BEGIN
+
+    IF EXISTS (
+        SELECT 1
+        FROM inserted i
+        JOIN Orders o ON i.order_number = o.order_number
+        WHERE 
+            i.order_status = 'cancelled'
+            AND (
+                    o.order_status = 'paid'
+                    OR o.amount IS NOT NULL
+                )
+    )
+    BEGIN
+        RAISERROR ('Cannot cancel a paid order.', 16, 1);
+        RETURN;
+    END
+
+    UPDATE Orders
+    SET 
+        order_date = i.order_date,
+        total_cost = i.total_cost,
+        cust_id = i.cust_id,
+        driver_id = i.driver_id,
+        office_id = i.office_id,
+        pay_date = i.pay_date,
+        pay_method = i.pay_method,
+        amount = i.amount,
+        order_status = i.order_status
+    FROM Orders o
+    JOIN inserted i ON o.order_number = i.order_number;
+
+END;
