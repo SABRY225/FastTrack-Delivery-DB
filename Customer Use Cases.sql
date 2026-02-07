@@ -2,7 +2,6 @@
 --=============================== Customer Use Cases ================================
 
 --============= Register Customer ==============
-use db40264
 
 create or alter procedure sp_AddCustomer 
     @name varchar(100),
@@ -150,6 +149,7 @@ begin
         city = @city
     WHERE cust_id = @cust_id
 END
+
 
 
 --============= Preventing the deletion of a customer with orders ==============

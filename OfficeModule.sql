@@ -28,6 +28,7 @@ BEGIN
         @order_status
     );
 END;
+
 --==============Case 2: Add Delivery Item to Order :: Stored Procedure=========================
 CREATE OR ALTER PROCEDURE sp_AddDeliveryItem
     @item_id INT,
@@ -69,6 +70,7 @@ BEGIN
     RETURN ISNULL(@total, 0);
 END;
 
+
 --==============Case 4: Auto Update Order Total :: Trigger=========================
 CREATE OR ALTER TRIGGER trg_UpdateOrderTotal
 ON deliveryItem
@@ -81,6 +83,7 @@ BEGIN
     JOIN inserted i
         ON Orders.order_number = i.order_number;
 END;
+
 --==============Case 5: View Order Details :: View=========================
 CREATE OR ALTER VIEW vw_OrderDetails
 WITH ENCRYPTION
@@ -102,6 +105,7 @@ FROM Orders o
 JOIN customer c ON o.cust_id = c.cust_id
 JOIN delivery d ON o.driver_id = d.driver_id
 JOIN office ofc ON o.office_id = ofc.office_id;
+
 --==============Case 6: Office Summary Report :: View=========================
 CREATE OR ALTER VIEW vw_OfficeSummary
 WITH ENCRYPTION

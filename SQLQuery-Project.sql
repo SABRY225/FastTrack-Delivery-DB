@@ -1,5 +1,5 @@
  --============= Create Table DB ================
- use db40264
+ create database FastTrackDeliveryDB
 
 --=============CREATE TABLE office================
 CREATE TABLE office (

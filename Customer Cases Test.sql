@@ -25,32 +25,7 @@ EXEC sp_AddCustomer
     @street = 'October',
     @city = 'Cairo';
 
-
---========2. View Customers========
-SELECT * FROM customer;
-SELECT * FROM cust_phones;
-
-
---========3. Customer Profile View========
-SELECT * 
-FROM vw_CustomerProfile;
-
-
---========4. Get Customer Orders========
-EXEC sp_GetCustomerOrders @cust_id = 1;
-
-
---========5. Customer Financial Analytics Dashboard========
-SELECT * 
-FROM fn_CustomerFinancialAnalytics(1);
-
-
---========6. Customer Classification (VIP / Normal)========
-SELECT * 
-FROM vw_CustomerCategory;
-
-
---========7. Update Customer Address========
+--========Update Customer Address========
 EXEC sp_UpdateCustomerAddress 
     @cust_id = 1,
     @street = 'Zamalek',
@@ -60,13 +35,39 @@ SELECT *
 FROM customer 
 WHERE cust_id = 1;
 
+--======== View Customers========
+SELECT * FROM customer;
+SELECT * FROM cust_phones;
 
---========8. Prevent Delete Customer With Orders========
+
+--========2. Customer Profile View========
+SELECT * 
+FROM vw_CustomerProfile;
+
+
+--========3. Get Customer Orders========
+EXEC sp_GetCustomerOrders @cust_id = 1;
+
+
+--========4. Customer Financial Analytics Dashboard========
+SELECT * 
+FROM fn_CustomerFinancialAnalytics(1);
+
+
+--======== Customer Classification (VIP / Normal)   (office)========
+SELECT * 
+FROM vw_CustomerCategory;
+
+
+
+
+
+--========5. Prevent Delete Customer With Orders========
 DELETE FROM customer 
 WHERE cust_id = 1;   
 
 
---========9. Delete Customer Without Orders========
+--========6. Delete Customer Without Orders========
 DELETE FROM customer 
 WHERE cust_id = 999;  
 
