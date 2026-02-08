@@ -247,6 +247,7 @@ BEGIN
 END;
 
 
+
 --===========================
 CREATE TRIGGER trg_prevent_cancel_paid_order
 ON Orders
@@ -285,3 +286,13 @@ BEGIN
     JOIN inserted i ON o.order_number = i.order_number;
 
 END;
+
+--==========================
+
+create or alter view vw_allOrders 
+WITH ENCRYPTION
+AS
+SELECT *
+FROM Orders o
+
+    

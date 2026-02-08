@@ -71,7 +71,7 @@ BEGIN
 END;
 
 --6 get delevery total earns
-CREATE FUNCTION fn_TotalDriverEarnings (@driver_id INT)
+CREATE or alter FUNCTION fn_TotalDriverEarnings (@driver_id INT)
 RETURNS DECIMAL(10,2)
 AS
 BEGIN
@@ -80,7 +80,7 @@ BEGIN
     SELECT @total = SUM(amount)
     FROM Orders
     WHERE driver_id = @driver_id
-      AND order_status = 'delivered';
+      AND order_status in('paid','delivered');
 
     RETURN ISNULL(@total, 0);
 END;

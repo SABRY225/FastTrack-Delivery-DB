@@ -3,14 +3,14 @@
 -- 1. Add Cuystomer
 EXEC sp_AddCustomer 
     @name = 'Shimaa',
-    @phone_number = '01211111111',
+    @phone_number = '01098583818',
     @street = 'Konouz',
     @city = 'Qena';
 
     -- Duplicate Phone Test
 EXEC sp_AddCustomer 
     @name = 'Mohammed',
-    @phone_number = '01211111111',   -- ‰›” «·—ﬁ„
+    @phone_number = '01098583818',   -- ‰›” «·—ﬁ„
     @street = 'October',
     @city = 'Cairo';
 
@@ -24,7 +24,7 @@ SELECT * FROM customer WHERE cust_id = 1;
 
 -- 2.  add order for the customer
 EXEC sp_CreateOrder
-    @order_number = 2100,
+    @order_number = 4000,
     @order_date = '2025-01-10',
     @cust_id = 1,
     @driver_id = null,
@@ -32,12 +32,12 @@ EXEC sp_CreateOrder
     @order_status = 'pending';
 
 EXEC sp_AddDeliveryItem
-    @item_id = 3,
+    @item_id = 10,
     @description = 'Laptop',
     @item_weight = 2.5,
     @delivery_fee = 100,
-    @order_number = 2000;
-
+    @order_number = 4000;
+    select * from Orders
 
 -- 3.  The customer display orders
 EXEC sp_GetCustomerOrders @cust_id = 1;
@@ -45,7 +45,7 @@ EXEC sp_GetCustomerOrders @cust_id = 1;
 -- 4. Cancel order
 UPDATE Orders
 SET order_status = 'cancelled'
-WHERE order_number = 1;
+WHERE order_number = 4000;
 
 -- 5. View a financial report for the client
 SELECT * 
@@ -59,8 +59,9 @@ WHERE cust_id = 1;
 --------- Office
 --1. View all orders
 	SELECT *
-	FROM Orders
-	WHERE office_id = 1;
+	FROM vw_allOrders vo
+	WHERE office_id = 1
+    order by vo.order_date desc
 
 --2. View order details
 	SELECT *
@@ -92,12 +93,11 @@ EXEC GetCustomerProfile @cust_id = 10;
 --3. View assigned orders
 EXEC sp_GetDriverOrders @driver_id = 1;
 
-
 --4. Calculate their total earnings
 SELECT dbo.fn_TotalDriverEarnings(1) AS Total_Earnings;
 
 --5. Payment process (delivering the order to the customer and changing its status)
-EXEC [dbo].[sp_PayOrder] 2000, 'cash';
+EXEC [dbo].[sp_PayOrder] 1005, 'cash';
 
 --6.  delivery report
 EXEC GetDeliveryReport @driver_id = 3;
@@ -115,5 +115,4 @@ EXEC GetDeliveryReport @driver_id = 3;
 
 --3. Customer classification as Regular or VIP
 
-SELECT * 
-FROM vw_CustomerCategory;
+   SELECT *  FROM vw_CustomerCategory;
